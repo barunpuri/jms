@@ -10,7 +10,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 public class Client {
  
 	// URL of the JMS server
-    private static String url = "tcp://203.246.113.80:61616";
+    private static String url = "tcp://localhost:61616";
     // default broker URL is : tcp://localhost:61616"
     
     public static Object lock = new Object();
