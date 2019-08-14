@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javax.jms.BytesMessage;
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -57,7 +56,7 @@ public class Responsor extends Thread {
 	
         TextMessage responseMessage = session.createTextMessage("Server:message \'" + message.getText() + "\' received");
         responseMessage.setJMSCorrelationID(message.getJMSMessageID());
-        Thread.sleep(10);
+        responseMessage.setStringProperty("fileName", message.getText());
         this.producer.send(message.getJMSReplyTo(), responseMessage);
 	}
 	

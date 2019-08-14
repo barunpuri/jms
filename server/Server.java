@@ -27,9 +27,11 @@ public class Server {
     
     public static void main(String[] args) throws JMSException, InterruptedException, IOException {
     	
+    	System.out.println("-----Server-----");
+    	
     	BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
-//    	System.out.println("Enter url to connect : ");
-//    	url = b.readLine();
+    	System.out.println("Enter url to connect : ");
+    	url = b.readLine();
     	//initial connection
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
     	Connection connection = connectionFactory.createConnection();
@@ -37,14 +39,13 @@ public class Server {
         
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         
-//        System.out.println("-----Server-----");
-//        System.out.println("Enter connection Type (ex. queue / topic): ");
-//        String connectionType = b.readLine();
-//        if(connectionType.equals("queue"))
-//    		subject = queueSubject;
-//    	else if(connectionType.equals("topic")) 
-//    		subject = topicSubject;
-//        
+        System.out.println("Enter connection Type (ex. queue / topic): ");
+        String connectionType = b.readLine();
+        if(connectionType.equals("queue"))
+    		subject = queueSubject;
+    	else if(connectionType.equals("topic")) 
+    		subject = topicSubject;
+        
     	Destination destination = session.createQueue(subject);
         
         MessageConsumer consumer = session.createConsumer(destination);
