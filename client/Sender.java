@@ -32,10 +32,11 @@ public class Sender extends Thread {
 	public void run() {
 		long startTime = System.nanoTime();
 		Receiver receiver = null;
+		 int sleepTime = 50;
 		
 		try {
-			this.send(inputText);
-			receiver = new Receiver(consumer, startTime );
+			this.send(inputText, sleepTime);
+			receiver = new Receiver(consumer, startTime - (sleepTime*1000000) );
 			
 			receiver.start();
 			
@@ -46,7 +47,7 @@ public class Sender extends Thread {
 		
 	}
 
-	public void send(String input) throws JMSException, InterruptedException {
+	public void send(String input, int sleepTime) throws JMSException, InterruptedException {
 		
 		TextMessage message = session.createTextMessage(input);
 		Destination tmpQueue = this.session.createTemporaryQueue();
