@@ -1,7 +1,6 @@
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -22,23 +21,22 @@ public class Receiver extends Thread{
         try {
         	Message message = this.consumer.receive();
         	
-            long workTime = System.currentTimeMillis() - startTime - 10;
-            
+            long workTime = System.nanoTime() - startTime;
+
             if (message instanceof BytesMessage) {
-             	BytesMessage bMessage = (BytesMessage) message;
+                 BytesMessage bMessage = (BytesMessage) message;
+                 System.out.println(bMessage.getStringProperty("fileName")+"; File has saved");
              	byte[] bytes = new byte[(int) bMessage.getBodyLength()];
             	
              	bMessage.readBytes(bytes);
                 	
              	FileOutputStream fos = new FileOutputStream(bMessage.getStringProperty("fileName"));
              	fos.write(bytes);
-             	fos.close();
-            	
-             	System.out.println("File has saved");
-             	
+                 fos.close();
+                 
             }
             else if(message instanceof TextMessage) {
-            	TextMessage textMessage = (TextMessage) message;
+                TextMessage textMessage = (TextMessage) message;
             	System.out.println(textMessage.getText());
             }
 

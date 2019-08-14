@@ -30,7 +30,7 @@ public class Sender extends Thread {
     }
     
 	public void run() {
-		long startTime = System.currentTimeMillis();
+		long startTime = System.nanoTime();
 		Receiver receiver = null;
 		
 		try {
@@ -39,14 +39,14 @@ public class Sender extends Thread {
 			
 			receiver.start();
 			
-		} catch (JMSException e) {
+		} catch (JMSException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 
-	public void send(String input) throws JMSException {
+	public void send(String input) throws JMSException, InterruptedException {
 		
 		TextMessage message = session.createTextMessage(input);
 		Destination tmpQueue = this.session.createTemporaryQueue();
@@ -54,42 +54,8 @@ public class Sender extends Thread {
 		
 		message.setJMSReplyTo(tmpQueue);
 		producer.send(message);
+		Thread.sleep(50);
 	}
-	
-	/*
-	 * 
-MessageProducer producer = session.createProducer(queue);
-Queue tmpQueue = session.createTemporaryQueue();
-MessageConsumer consumer = session.createConsumer(tmpQueue);
-
-// Send request
-Message request = session.createTextMessage("how are you?");
-request.setJMSReplyTo(tmpQueue);
-producer.send(request);
-
-// Wait for response
-Message reply = consumer.receive();
-TextMessage tm = (TextMessage) reply;
-System.out.println("Got reply: " + tm.getText());
-*/
-
-//	public String send(File f) throws JMSException, IOException {
-//	int flen = (int) f.length();
-//	byte[] bytes = new byte[flen];
-//	BytesMessage message = session.createBytesMessage();
-//	DataInputStream dis = new DataInputStream(new FileInputStream(f));
-//	dis.readFully(bytes);
-//	dis.close();
-//	
-//    message.writeBytes(bytes);
-//    message.setStringProperty("fileName", f.getName());
-//    
-//    this.producer.send(message);
-//    
-//	System.out.println("File successfully sent");
-//	
-//	return message.getJMSMessageID();
-//}
 	
 }
 

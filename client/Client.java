@@ -17,9 +17,11 @@ public class Client {
     
     public static void main(String[] args) throws JMSException, InterruptedException, IOException {
     	
+    	System.out.println("-----Client-----");
+    	
     	BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
-//    	System.out.println("Enter url to connect : ");
-//    	url = b.readLine();
+    	System.out.println("Enter url to connect : ");
+    	url = b.readLine();
     	
     	//initial connection
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
@@ -29,11 +31,9 @@ public class Client {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         
         String connectionType = "queue";
-        System.out.println("-----Client-----");
-//        System.out.println("Enter connection Type (ex. queue / topic): ");
-//        connectionType = b.readLine();
+        System.out.println("Enter connection Type (ex. queue / topic): ");
+        connectionType = b.readLine();
         
-        int cnt=0;
  		while(true){
  			System.out.println("Enter message or file Path and name, end to terminate: ");
  			String input = b.readLine();
@@ -43,9 +43,8 @@ public class Client {
  		        break;
  			
  			Sender sender = new Sender(session, connectionType, input);
- 			sender.run();
- 			//sender.start();
- 			cnt ++;
+ 			//sender.run();
+ 			sender.start();
 		}
  		
     }
